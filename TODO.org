@@ -1,0 +1,318 @@
+#+TITLE: Todo
+#+DESCRIPTION: This file serves as a forge agnostic issue tracker for this project
+* Table of Contents :TOC_3:
+- [[#introduction][Introduction]]
+- [[#top-level][Top level]]
+  - [[#flake][Flake]]
+  - [[#stable-packages][Stable packages]]
+  - [[#nixos][NixOS]]
+  - [[#home-manager][Home Manager]]
+  - [[#packages][Packages]]
+  - [[#overlays][Overlays]]
+- [[#nixos-1][NixOS]]
+  - [[#general][General]]
+  - [[#re-expose-nixpkgs][Re-expose nixpkgs]]
+  - [[#sandbox][Sandbox]]
+  - [[#users][Users]]
+    - [[#jak][Jak]]
+  - [[#machines][Machines]]
+    - [[#tx220][tx220]]
+- [[#emacs][Emacs]]
+  - [[#install][Install]]
+  - [[#bootstrap][Bootstrap]]
+  - [[#patch-ob-tangle][Patch ob-tangle]]
+  - [[#gc-hack][GC Hack]]
+  - [[#use-package][use-package]]
+  - [[#package][package]]
+  - [[#general-package][General (package)]]
+  - [[#dont-clutter-system][Don't Clutter system]]
+  - [[#helpers][Helpers]]
+  - [[#ivy][ivy]]
+  - [[#smex][smex]]
+  - [[#counsel][counsel]]
+  - [[#avy][avy]]
+  - [[#imenu--imenu-list][imenu / imenu-list]]
+  - [[#wgrep][wgrep]]
+  - [[#whitespace][whitespace]]
+  - [[#whitespace-cleanup][whitespace-cleanup]]
+  - [[#which-key][which-key]]
+  - [[#tab-bar-mode][tab-bar-mode]]
+  - [[#highlight-current-line][Highlight current line]]
+  - [[#scrolling][Scrolling]]
+  - [[#visual-fill-column][visual-fill-column]]
+  - [[#misc][Misc]]
+- [[#environment][Environment]]
+  - [[#exwm][EXWM]]
+  - [[#window-managment][Window managment]]
+  - [[#window-layout][Window layout]]
+  - [[#screen-locking][Screen locking]]
+    - [[#slock][Slock]]
+    - [[#xss-lock][xss-lock]]
+    - [[#exwm-integration][EXWM integration]]
+  - [[#system-tray][System tray]]
+  - [[#screenshots][Screenshots]]
+  - [[#misc-1][Misc]]
+- [[#input][Input]]
+  - [[#keyboard][Keyboard]]
+    - [[#xkeymap][xkeymap]]
+    - [[#emacs-quail][Emacs quail]]
+  - [[#trackpaddisable][Trackpad(Disable)]]
+  - [[#trackpoint][Trackpoint]]
+- [[#network][Network]]
+  - [[#networkmanager][NetworkManager]]
+  - [[#vpn][VPN]]
+  - [[#ssh][SSH]]
+    - [[#mosh][Mosh]]
+  - [[#dnsmasq][dnsmasq]]
+  - [[#firewall][Firewall]]
+- [[#services][Services]]
+  - [[#locate][Locate]]
+  - [[#gitolite][gitolite]]
+  - [[#syncthing][Syncthing]]
+  - [[#ipfs][IPFS]]
+  - [[#docker][Docker]]
+  - [[#k8s][K8s]]
+  - [[#backup][Backup]]
+  - [[#direnv--lorri][direnv + lorri]]
+- [[#hardware][Hardware]]
+  - [[#autorandr][Autorandr]]
+  - [[#screen-brightness][Screen brightness]]
+  - [[#redshift][Redshift]]
+  - [[#pulseaudio][Pulseaudio]]
+    - [[#replace-with-pipewire][Replace with Pipewire]]
+  - [[#bluetooth][Bluetooth]]
+  - [[#fwupd][fwupd]]
+- [[#browsers][Browsers]]
+- [[#evil-mode][Evil-mode]]
+  - [[#general-1][General]]
+  - [[#evil-numbers][evil-numbers]]
+  - [[#evil-collection][evil-collection]]
+  - [[#evil-surround][evil-surround]]
+  - [[#calc][calc]]
+  - [[#evilify-compile-mode][Evilify compile mode]]
+  - [[#evilify-minibuffer][Evilify minibuffer]]
+  - [[#evilify-shell-mode][Evilify shell mode]]
+  - [[#lispyville][lispyville]]
+- [[#org-mode][Org-mode]]
+  - [[#general-2][General]]
+  - [[#todo][Todo]]
+  - [[#clocking][Clocking]]
+  - [[#capture][Capture]]
+  - [[#capturing-images][Capturing images]]
+  - [[#datetree][datetree]]
+  - [[#cliplink][cliplink]]
+  - [[#refile][Refile]]
+  - [[#archive][Archive]]
+  - [[#agenda][Agenda]]
+  - [[#babel][Babel]]
+  - [[#latex-preview][Latex preview]]
+  - [[#image-preview][Image preview]]
+  - [[#export][Export]]
+  - [[#crypt][Crypt]]
+  - [[#habits][Habits]]
+  - [[#adaptive-wrap][adaptive-wrap]]
+  - [[#org-roam][org-roam]]
+  - [[#org-ref][org-ref]]
+  - [[#org-roam-bibtex][org-roam-bibtex]]
+  - [[#toc-org][toc-org]]
+  - [[#org-fc][org-fc]]
+  - [[#org-cfc-review-todos][org-cfc review todos]]
+  - [[#toggle-markupview][toggle markup/view]]
+  - [[#evilify-org-mode][Evilify org-mode]]
+- [[#mail-setup][Mail Setup]]
+  - [[#application][Application]]
+  - [[#interface][Interface]]
+  - [[#emacs-1][Emacs]]
+- [[#applications][Applications]]
+  - [[#gpg][GPG]]
+  - [[#trezor][Trezor]]
+  - [[#password-store][password-store]]
+  - [[#zathura][Zathura]]
+  - [[#user-applications][User Applications]]
+- [[#development][Development]]
+  - [[#vim-as-local-backup][Vim (as local backup)]]
+  - [[#terminal][Terminal]]
+  - [[#git][git]]
+  - [[#man-pages][Man pages]]
+  - [[#emacs-2][Emacs]]
+  - [[#languages][Languages]]
+    - [[#emacs-lisp][Emacs Lisp]]
+    - [[#nix][Nix]]
+    - [[#haskell][Haskell]]
+    - [[#go][Go]]
+    - [[#javascript][Javascript]]
+    - [[#typescript][Typescript]]
+    - [[#clojurescript][Clojure(script)]]
+    - [[#ledgerhledger][Ledger/HLedger]]
+    - [[#graphviz][graphviz]]
+    - [[#k8s-1][K8s]]
+    - [[#sql][SQL]]
+    - [[#kotlin][Kotlin]]
+    - [[#python][Python]]
+- [[#look-and-feel][Look and Feel]]
+  - [[#remove-the-clutter][Remove the clutter]]
+  - [[#beacon-mode][beacon-mode]]
+  - [[#font][Font]]
+  - [[#custom-input-font][Custom Input font]]
+  - [[#variable-pitch-fonts-in-org-mode][Variable-pitch fonts in org-mode]]
+  - [[#color-theme][Color theme]]
+  - [[#emacs-modeline][Emacs modeline]]
+- [[#misc-2][Misc]]
+
+* TODO Introduction
+* TODO Top level
+** TODO Flake
+** TODO Stable packages
+** TODO NixOS
+** TODO Home Manager
+** TODO Packages
+** TODO Overlays
+* TODO NixOS
+** TODO General
+** TODO Re-expose nixpkgs
+** TODO Sandbox
+** TODO Users
+*** TODO Jak
+** TODO Machines
+*** TODO tx220
+* TODO Emacs
+** TODO Install
+** TODO Bootstrap
+** TODO Patch ob-tangle
+** TODO GC Hack
+** TODO use-package
+** TODO package
+** TODO General (package)
+** TODO Don't Clutter system
+** TODO Helpers
+** TODO ivy
+** TODO smex
+** TODO counsel
+** TODO avy
+** TODO imenu / imenu-list
+** TODO wgrep
+** TODO whitespace
+** TODO whitespace-cleanup
+** TODO which-key
+** TODO tab-bar-mode
+** TODO Highlight current line
+** TODO Scrolling
+** TODO visual-fill-column
+** TODO Misc
+* TODO Environment
+** TODO EXWM
+** TODO Window managment
+** TODO Window layout
+** TODO Screen locking
+*** TODO Slock
+*** TODO xss-lock
+*** TODO EXWM integration
+** TODO System tray
+** TODO Screenshots
+** TODO Misc
+* TODO Input
+** TODO Keyboard
+*** TODO xkeymap
+*** TODO Emacs quail
+** TODO Trackpad(Disable)
+** TODO Trackpoint
+* TODO Network
+** TODO NetworkManager
+** TODO VPN
+** TODO SSH
+*** TODO Mosh
+** TODO dnsmasq
+** TODO Firewall
+* TODO Services
+** TODO Locate
+** TODO gitolite
+** TODO Syncthing
+** TODO IPFS
+** TODO Docker
+** TODO K8s
+** TODO Backup
+** TODO direnv + lorri
+* TODO Hardware
+** TODO Autorandr
+** TODO Screen brightness
+** TODO Redshift
+** TODO Pulseaudio
+*** TODO Replace with Pipewire
+** TODO Bluetooth
+** TODO fwupd
+* TODO Browsers
+* TODO Evil-mode
+** TODO General
+** TODO evil-numbers
+** TODO evil-collection
+** TODO evil-surround
+** TODO calc
+** TODO Evilify compile mode
+** TODO Evilify minibuffer
+** TODO Evilify shell mode
+** TODO lispyville
+* TODO Org-mode
+** TODO General
+** TODO Todo
+** TODO Clocking
+** TODO Capture
+** TODO Capturing images
+** TODO datetree
+** TODO cliplink
+** TODO Refile
+** TODO Archive
+** TODO Agenda
+** TODO Babel
+** TODO Latex preview
+** TODO Image preview
+** TODO Export
+** TODO Crypt
+** TODO Habits
+** TODO adaptive-wrap
+** TODO org-roam
+** TODO org-ref
+** TODO org-roam-bibtex
+** TODO toc-org
+** TODO org-fc
+** TODO org-cfc review todos
+** TODO toggle markup/view
+** TODO Evilify org-mode
+* TODO Mail Setup
+** TODO Application
+** TODO Interface
+** TODO Emacs
+* TODO Applications
+** TODO GPG
+** TODO Trezor
+** TODO password-store
+** TODO Zathura
+** TODO User Applications
+* TODO Development
+** TODO Vim (as local backup)
+** TODO Terminal
+** TODO git
+** TODO Man pages
+** TODO Emacs
+** TODO Languages
+*** TODO Emacs Lisp
+*** TODO Nix
+*** TODO Haskell
+*** TODO Go
+*** TODO Javascript
+*** TODO Typescript
+*** TODO Clojure(script)
+*** TODO Ledger/HLedger
+*** TODO graphviz
+*** TODO K8s
+*** TODO SQL
+*** TODO Kotlin
+*** TODO Python
+* TODO Look and Feel
+** TODO Remove the clutter
+** TODO beacon-mode
+** TODO Font
+** TODO Custom Input font
+** TODO Variable-pitch fonts in org-mode
+** TODO Color theme
+** TODO Emacs modeline
+* TODO Misc
