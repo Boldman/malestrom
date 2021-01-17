@@ -13,3 +13,89 @@ emacs README.org --batch -f org-babel-tangle
 #+end_src
 
 #+RESULTS:
+
+This files in this repo are generated from this README and are included with explaination, which will be missing from the generated file.
+
+* Table of Contents :TOC_3:
+- [[#introduction][Introduction]]
+- [[#flake][Flake]]
+  - [[#stable-package][Stable Package]]
+  - [[#home-manager][Home-Manager]]
+
+* Flake
+This repository is a valid nix-flake, to allow this, emacs generates a ~flake.nix~ file from this README file.
+#+begin_src nix :tangle flake.nix :noweb no-export :padline no
+#
+# This file is auto-generated from "README.org"
+#
+{
+  description = "Malestrom configuration";
+
+  inputs = {
+    nixpkgs = {
+      type  = "github";
+      owner = "NixOS";
+      repo  = "nixpkgs";
+      ref   = "nixpkgs-unstable";
+    };
+    <<flake-inputs-stable>>
+    <<flake-inputs-home-manager>>
+    nixos-hardware = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixos-hardware";
+      flake = false;
+    };
+    emacs-overlay = {
+      type = "github";
+      owner = "nix-community";
+      repo = "emacs-overlay";
+    };
+  };
+
+  outputs = { home-manager, nixpkgs, ... }@inputs:
+   {
+    nixosConfigurations = {
+      tx220 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.jak = import ./home.nix;
+          }
+        ];
+      };
+    };
+  };
+}
+
+#+end_src
+** Stable Package
+For packages that are broken in nixpkgs-unstable, expose the latest stable channel as ~pkgs.stable~.
+
+Add input:
+#+name: flake-inputs-stable
+#+begin_src nix
+nixpkgs-stable = {
+  type = "github";
+  owner = "NixOS";
+  repo = "nixpkgs"
+  ref = "nixos-20.09";
+}
+#+end_src
+** Home-Manager
+Used to manage dotfiles, including on non-NixOS hosts
+Add Home-Manager to flake inputs.
+#+name: flake-inputs-home-manager
+#+begin_src nix
+home-manager = {
+  type = "github";
+  owner = "nix-community";
+  repo = "home-manager";
+  ref = "master";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+#+end_src

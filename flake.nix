@@ -1,3 +1,6 @@
+#
+# This file is auto-generated from "README.org"
+#
 {
   description = "Malestrom configuration";
 
@@ -11,12 +14,12 @@
     nixpkgs-stable = {
       type = "github";
       owner = "NixOS";
-      repo = "nixpkgs";
+      repo = "nixpkgs"
       ref = "nixos-20.09";
-    };
+    }
     home-manager = {
       type = "github";
-      owner = "rycee";
+      owner = "nix-community";
       repo = "home-manager";
       ref = "master";
       inputs.nixpkgs.follows = "nixpkgs";
