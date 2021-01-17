@@ -49,11 +49,11 @@
   ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  networking.hostName = "T-X220"; # Define your hostname.
+  networking.hostName = "tx220"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
-  time.timeZone = "America/Mountain";
+  time.timeZone = "America/Phoenix";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -100,9 +100,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim
-    firefox
-    dmenu
-    emacs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
