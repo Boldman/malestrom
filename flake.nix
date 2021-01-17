@@ -8,6 +8,12 @@
       repo  = "nixpkgs";
       ref   = "nixpkgs-unstable";
     };
+    nixpkgs-stable = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = "nixos-20.09";
+    };
     home-manager = {
       type = "github";
       owner = "rycee";
@@ -15,9 +21,21 @@
       ref = "master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixos-hardware";
+      flake = false;
+    };
+    emacs-overlay = {
+      type = "github";
+      owner = "nix-community";
+      repo = "emacs-overlay";
+    };
   };
 
-  outputs = { home-manager, nixpkgs, ... }: {
+  outputs = { home-manager, nixpkgs, ... }@inputs:
+   {
     nixosConfigurations = {
       tx220 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
