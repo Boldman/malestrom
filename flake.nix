@@ -14,9 +14,9 @@
     nixpkgs-stable = {
       type = "github";
       owner = "NixOS";
-      repo = "nixpkgs"
+      repo = "nixpkgs";
       ref = "nixos-20.09";
-    }
+    };
     home-manager = {
       type = "github";
       owner = "nix-community";

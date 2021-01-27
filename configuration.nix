@@ -78,6 +78,7 @@
 
   # Configure keymap in X11
   services.xserver.layout = "us";
+  services.xserver.xkbOptions = "ctrl:swapcaps";
   # services.xserver.xkbOptions = "eurosign:e";
 
   # Enable CUPS to print documents.
@@ -100,6 +101,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim
+    gnupg pinentry (python3.withPackages(ps: with ps; [ trezor_agent wheel]))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -117,6 +119,7 @@
   services.xserver.enable = true;
   services.xserver.windowManager.i3.enable = true;
   services.xserver.displayManager.defaultSession = "none+i3";
+  services.trezord.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
