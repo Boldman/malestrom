@@ -16,7 +16,7 @@ emacs README.org --batch -f org-babel-tangle
 
 All files in this repository are generated from and synced this very README, they are exported to allow the repo to be a valid nix flake and to bootstrap emacs.
 
-* Table of Contents :TOC_3:
+* Table of Contents :TOC_4:
 - [[#introduction][Introduction]]
 - [[#flake][Flake]]
 - [[#hardware][Hardware]]
@@ -28,8 +28,92 @@ All files in this repository are generated from and synced this very README, the
 - [[#home-manager][Home-Manager]]
 - [[#emacs][Emacs]]
   - [[#installation][Installation]]
-  - [[#bootstrap-emacs-config][Bootstrap Emacs config]]
-  - [[#patch-ob-tangle][Patch ob-tangle]]
+  - [[#warning][Warning]]
+  - [[#startup-performance][Startup performance]]
+  - [[#package][Package]]
+  - [[#use-package][Use-Package]]
+  - [[#server-mode][Server Mode]]
+  - [[#desktop-environment][Desktop Environment]]
+    - [[#window-managment][Window Managment]]
+    - [[#helper-functions][Helper Functions]]
+  - [[#ui-configuration][UI Configuration]]
+    - [[#basics][Basics]]
+  - [[#keybindings][Keybindings]]
+    - [[#esc-cancels-all][ESC cancels all]]
+    - [[#evil][Evil]]
+    - [[#which-key][Which-key]]
+    - [[#general][General]]
+  - [[#general-configuration][General Configuration]]
+    - [[#user-interface][User Interface]]
+    - [[#theme][Theme]]
+    - [[#font][Font]]
+    - [[#mode-line][Mode Line]]
+      - [[#basic-customization][Basic Customization]]
+      - [[#enable-mode-diminishing][Enable Mode Diminishing]]
+      - [[#doom-modeline][Doom Modeline]]
+    - [[#notifications][Notifications]]
+    - [[#auto-saving-changed-files][Auto-Saving Changed Files]]
+    - [[#auto-reverting][Auto-reverting]]
+    - [[#ui-toggles][UI Toggles]]
+    - [[#highlight-matching-braces][Highlight Matching Braces]]
+    - [[#tramp][Tramp]]
+    - [[#emacs-as-external-editor][Emacs as External Editor]]
+  - [[#editing-configuration][Editing Configuration]]
+    - [[#tab-widths][Tab Widths]]
+    - [[#use-spaces-instead-of-tabs][Use spaces instead of tabs]]
+    - [[#commenting-lines][Commenting Lines]]
+    - [[#automatically-clean-whitespace][Automatically clean whitespace]]
+  - [[#configuration-files][Configuration Files]]
+    - [[#helpers][Helpers]]
+  - [[#org-mode][Org Mode]]
+    - [[#org-configuration][Org Configuration]]
+    - [[#file-paths][File Paths]]
+    - [[#workflow-states][Workflow States]]
+    - [[#tags][Tags]]
+    - [[#agendas][Agendas]]
+    - [[#capture-templates][Capture Templates]]
+    - [[#source-editing][Source editing]]
+    - [[#block-templates][Block Templates]]
+    - [[#pomodoro][Pomodoro]]
+    - [[#searching][Searching]]
+    - [[#bindings][Bindings]]
+    - [[#automatically-tangle-on-save][Automatically "Tangle" on Save]]
+    - [[#closing][Closing]]
+  - [[#development][Development]]
+    - [[#git][git]]
+      - [[#magit][magit]]
+      - [[#magit-todos][magit-todos]]
+      - [[#git-link][git-link]]
+    - [[#projectile][Projectile]]
+      - [[#initial-setup][Initial Setup]]
+    - [[#languages][Languages]]
+      - [[#language-server-support][Language Server Support]]
+      - [[#meta-lisp][Meta Lisp]]
+      - [[#scheme][Scheme]]
+      - [[#emacs-lisp][Emacs Lisp]]
+      - [[#scheme-1][Scheme]]
+      - [[#markdown][Markdown]]
+      - [[#html][HTML]]
+  - [[#productivity][Productivity]]
+    - [[#syntax-checking-with-flycheck][Syntax checking with Flycheck]]
+    - [[#snippets][Snippets]]
+    - [[#smart-parens][Smart Parens]]
+    - [[#rainbow-delimiters][Rainbow Delimiters]]
+    - [[#rainbow-mode][Rainbow Mode]]
+  - [[#writing-prose][Writing (Prose)]]
+    - [[#darkroom][Darkroom]]
+  - [[#applications][Applications]]
+    - [[#binding-prefix][Binding Prefix]]
+    - [[#mail][Mail]]
+      - [[#mu4e][mu4e]]
+    - [[#calendar][Calendar]]
+    - [[#finance][Finance]]
+    - [[#emms][EMMS]]
+  - [[#system-utilites][System Utilites]]
+    - [[#guix][Guix]]
+    - [[#deamons][Deamons]]
+    - [[#pulseaudio][PulseAudio]]
+- [[#inspiration][Inspiration]]
 
 * Flake
 This repository is a valid nix-flake, to allow this, emacs generates a ~flake.nix~ file from this README file.
@@ -240,9 +324,9 @@ Add input:
 nixpkgs-stable = {
   type = "github";
   owner = "NixOS";
-  repo = "nixpkgs"
+  repo = "nixpkgs";
   ref = "nixos-20.09";
-}
+};
 #+end_src
 * Home-Manager
 Used to manage user dotfiles, including on non-NixOS hosts
@@ -308,128 +392,131 @@ Expose Emacs with my packages as a top-level package
 (~<<flake-packages-emacs>>~)
 #+name: flake-packages-emacs
 #+begin_src nix
-{  programs.emacs = {
-    enable = true;
-    #package = pkgs.emacsGit;
-    extraPackages = (epkgs:
-      (with epkgs.melpaPackages; [
-        aggressive-indent
-        avy
-        bash-completion
-        beacon
-        blacken
-        cider
-        clojure-mode
-        cmake-mode
-        color-identifiers-mode
-        company
-        company-box
-        company-lsp
-        company-org-roam
-        counsel
-        counsel-projectile
-        diff-hl
-        diminish
-        direnv
-        dockerfile-mode
-        doom-modeline
-        dtrt-indent
-        edit-indirect
-        eglot
-        el-patch
-        elpy
-        epresent
-        evil
-        evil-collection
-        evil-magit
-        evil-numbers
-        evil-org
-        evil-surround
-        evil-swap-keys
-        fish-completion
-        fish-mode
-        flycheck
-        flycheck-inline
-        flycheck-jest
-        flycheck-rust
-        forth-mode
-        general
-        gitconfig-mode
-        go-mode
-        google-translate
-        graphviz-dot-mode
-        groovy-mode
-        haskell-mode
-        imenu-list
-        ivy
-        ivy-bibtex
-        ivy-pass
-        jinja2-mode
-        js2-mode
-        json-mode
-        ledger-mode
-        lispyville
-        lsp-haskell
-        lsp-mode
-        lsp-ui
-        lua-mode
-        magit
-        markdown-mode
-        modus-themes
-        nix-mode
-        nix-sandbox
-        notmuch
-        org-cliplink
-        org-download
-        org-drill
-        org-ref
-        org-roam
-        org-roam-bibtex
-        org-super-agenda
-        paren-face
-        pass
-        php-mode
-        pip-requirements
-        plantuml-mode
-        prettier-js
-        projectile
-        protobuf-mode
-        psc-ide
-        purescript-mode
-        py-autopep8
-        racer
-        racket-mode
-        restclient
-        rjsx-mode
-        rust-mode
-        smex
-        spaceline
-        terraform-mode
-        tide
-        toc-org
-        typescript-mode
-        use-package
-        visual-fill-column
-        vterm
-        vue-mode
-        w3m
-        web-mode
-        wgrep
-        which-key
-        whitespace-cleanup-mode
-        writegood-mode
-        yaml-mode
-        yasnippet
-      ]) ++
-      [
-        epkgs.orgPackages.org-plus-contrib
-        epkgs.elpaPackages.adaptive-wrap
-        epkgs.exwm
-      ]
-      );
-  };
-  services.emacs.enable = true;
-  }
+  {  programs.emacs = {
+      enable = true;
+      #package = pkgs.emacsGit;
+      extraPackages = (epkgs:
+	(with epkgs.melpaPackages; [
+	  aggressive-indent
+	  avy
+	  bash-completion
+	  beacon
+	  blacken
+	  cider
+	  clojure-mode
+	  cmake-mode
+	  color-identifiers-mode
+	  company
+	  company-box
+	  company-lsp
+	  company-org-roam
+	  counsel
+	  counsel-projectile
+	  darkroom
+	  diff-hl
+	  diminish
+	  direnv
+	  dockerfile-mode
+	  doom-modeline
+	  dtrt-indent
+	  edit-indirect
+	  eglot
+	  el-patch
+	  elpy
+	  epresent
+	  evil
+	  evil-collection
+	  evil-magit
+	  evil-numbers
+	  evil-org
+	  evil-surround
+	  evil-swap-keys
+	  fish-completion
+	  fish-mode
+	  flycheck
+	  flycheck-inline
+	  flycheck-jest
+	  flycheck-rust
+	  forth-mode
+	  general
+	  gitconfig-mode
+	  go-mode
+	  google-translate
+	  graphviz-dot-mode
+	  groovy-mode
+	  haskell-mode
+	  imenu-list
+	  ivy
+	  ivy-bibtex
+	  ivy-pass
+	  ivy-xref
+	  jinja2-mode
+	  js2-mode
+	  json-mode
+	  ledger-mode
+	  lispyville
+	  lsp-haskell
+	  lsp-mode
+	  lsp-ui
+	  lua-mode
+	  magit
+	  markdown-mode
+	  modus-themes
+	  nix-mode
+	  nix-sandbox
+	  notmuch
+	  org-cliplink
+	  org-download
+	  org-drill
+	  org-ref
+	  org-roam
+	  org-roam-bibtex
+	  org-super-agenda
+	  paren-face
+	  pass
+	  php-mode
+	  pip-requirements
+	  plantuml-mode
+	  prettier-js
+	  projectile
+	  protobuf-mode
+	  psc-ide
+	  purescript-mode
+	  py-autopep8
+	  racer
+	  racket-mode
+	  restclient
+	  rjsx-mode
+	  rust-mode
+	  smex
+	  spaceline
+          super-save
+	  terraform-mode
+	  tide
+	  toc-org
+	  typescript-mode
+	  use-package
+	  visual-fill-column
+	  vterm
+	  vue-mode
+	  w3m
+	  web-mode
+	  wgrep
+	  which-key
+	  whitespace-cleanup-mode
+	  writegood-mode
+	  yaml-mode
+	  yasnippet
+	]) ++
+	[
+	  epkgs.orgPackages.org-plus-contrib
+	  epkgs.elpaPackages.adaptive-wrap
+	  epkgs.exwm
+	]
+	);
+    };
+    services.emacs.enable = true;
+    }
 #+end_src
 ** Warning
    Put a warning header into [[file:init.el][init.el]] that it is written by this very README file
@@ -740,8 +827,8 @@ Expose Emacs with my packages as a top-level package
        :config
        (setq alert-default-style 'notifications))
    #+end_src
-*** Auto-Saving Changed Files
-   #+begin_src emacs-lisp :tangle init.el
+*** TODO Auto-Saving Changed Files
+   #+begin_src emacs-lisp 
      (use-package super-save
        :config
        (super-save-mode +1))
@@ -750,7 +837,7 @@ Expose Emacs with my packages as a top-level package
     #+begin_src emacs-lisp :tangle init.el
       (global-auto-revert-mode 1)
     #+end_src
-*** UI Toggles
+*** TODO UI Toggles
     #+begin_src emacs-lisp :tangle init.el
       (jak/leader-key-def
        "t" '(:ignore t :which-key "toggles")
@@ -1066,7 +1153,7 @@ Expose Emacs with my packages as a top-level package
 *** git
 **** magit
      https://magit.vc/manual/magit/
-     #+begin_src emacs-lisp :
+     #+begin_src emacs-lisp :tangle init.el
        (use-package magit
 	 :commands (magit-status magit-get-current-branch)
 	 :custom
@@ -1095,12 +1182,12 @@ Expose Emacs with my packages as a top-level package
 **** magit-todos
      This extension to Magit shows a TODOs section in your git status buffer
      containing all lines with TODO in files contained within the repo. More info in the [[https://github.com/alphapapa/magit-todos][Github repo]].
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle init.el
        (use-package magit-todos
 	 :defer t)
      #+end_src
 **** git-link
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle init.el
        (use-package git-link
 	 :commands git-link
 	 :config
@@ -1110,7 +1197,7 @@ Expose Emacs with my packages as a top-level package
      #+end_src
 *** Projectile
 **** Initial Setup
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle init.el
        (use-package projectile
 	 :diminish projectile-mode
 	 :config (projectile-mode)
@@ -1134,14 +1221,14 @@ Expose Emacs with my packages as a top-level package
      #+end_src
 *** Languages 
 **** Language Server Support
-     #+begin_src emacs-lisp
-       (use-package ivy-xref
-	 :init (if (< emacs-major-version 27)
-		   (setq xref-show-xrefs-functions #'ivy-xref-show-xrefs)
-		 (setq xref-show-definitions-function #'ivy-xref-show-defs)))
+     #+begin_src emacs-lisp :tangle init.el
+;;       (use-package ivy-xref
+;;	 :init (if (< emacs-major-version 27)
+;;		   (setq xref-show-xrefs-functions #'ivy-xref-show-xrefs)
+;;		 (setq xref-show-definitions-function #'ivy-xref-show-defs)))
 
        (use-package lsp-mode
-	 :command lsp
+	 :commands lsp
 	 :hook ((typescript-mode js2-mode web-mode) . lsp)
 	 :bind (:map lsp-mode-map
 		     ("TAB" . completion-at-point)))
@@ -1166,7 +1253,7 @@ Expose Emacs with my packages as a top-level package
 	 (lsp-ui-doc-show))
      #+end_src
 **** Meta Lisp
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle init.el
        (use-package lispy
 	 :hook ((emacs-lisp-mode . lispy-mode)
 		(scheme-mode     . lispy-mode)))
@@ -1178,12 +1265,12 @@ Expose Emacs with my packages as a top-level package
 	 (lispyville-set-key-theme '(operators c-w additional)))
      #+end_src
 **** Scheme
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle init.el
        (use-package scheme-mode
 	 :mode "\\.sld\\'")
      #+end_src
 **** Emacs Lisp
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp :tangle init.el
        (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
 
        (use-package helpful
@@ -1205,6 +1292,205 @@ Expose Emacs with my packages as a top-level package
 	:keymaps '(visual)
 	"er" '(eval-region :which-key "eval region"))
      #+end_src
+**** Scheme
+     #+begin_src emacs-lisp :tangle init.el
+       (use-package geiser
+	 :ensure t
+	 :config
+	 (setq geiser-default-implementation 'guile)
+	 (setq geiser-active-implementation '(gambit guile))
+	 (setq geiser-repl-default-port 44555)
+	 (setq geiser-implementations-alist '(((regexp "\\.scm$") gambit)
+					       ((regexp "\\.sld") gambit))))
+     #+end_src
+**** Markdown
+     #+begin_src emacs-lisp :tangle init.el
+       (use-package markdown-mode
+	 :mode "\\.md\\'"
+	 :config
+	 (setq markdown-command "marked")
+	 (defun jak/set-markdown-header-font-sizes ()
+	   (dolist (face '((markdown-header-face-1 . 1.2)
+			   (markdown-header-face-2 . 1.1)
+			   (markdown-header-face-3 . 1.0)
+			   (markdown-header-face-4 . 1.0)
+			   (markdown-header-face-5 . 1.0)))
+	     (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+
+	 (defun jak/markdown-mode-hook ()
+	   (jak/set-makrdown-header-font-sizes))
+
+	 (add-hook 'markdown-mode-hook 'jak/markdown-mode-hook))
+     #+end_src
+**** HTML
+     #+begin_src emacs-lisp :tangle init.el
+
+     #+end_src
+** Productivity
+*** Syntax checking with Flycheck
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package flycheck
+	:defer t
+	:hook (lsp-mode . flycheck-mode))
+
+    #+end_src
+*** Snippets
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package yasnippet
+	:hook (prog-mode . yas-minor-mode)
+	:config
+	(yas-reload-all))
+    #+end_src
+*** Smart Parens
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package smartparens
+	:hook (prog-mode . smartparens-mode))
+    #+end_src
+*** Rainbow Delimiters
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package rainbow-delimiters
+	:hook (prog-mode . rainbow-delimiters-mode))
+    #+end_src
+*** Rainbow Mode
+    Sets the background of HTML color strings in buffers to be the color mentioned.
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package rainbow-mode
+	:defer t
+	:hook (org-mode
+	       emacs-lisp-mode
+	       web-mode
+	       typescript-mode
+	       js2-mode))
+    #+end_src
+** Writing (Prose)
+*** Darkroom
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package darkroom
+	:commands darkroom-mode
+	:config
+	(setq darkroom-text-scale-increase 0))
+
+      (defun jak/enter-focus-mode ()
+	(interactive)
+	(darkroom-mode 1)
+	(display-line-numbers-mode 0))
+
+      (defun jak/leave-focus-mode ()
+	(interactive)
+	(darkroom 0)
+	(display-line-numbers 1))
+
+      (defun jak/toggle-focus-mode ()
+	(interactive)
+	(if (symbol-value darkroom-mode)
+	    (jak/leave-focus-mode)
+	  (jak/enter-focus-mode)))
+
+      (jak/leader-key-def
+       "tf" '(jak/toggle-focus-mode :which-key "focus mode"))
+    #+end_src
+** Applications
+*** Binding Prefix
+    #+begin_src emacs-lisp :tangle init.el
+      (jak/leader-key-def
+       "a" '(:ignore t :which-key "apps"))
+    #+end_src
+*** Mail
+**** TODO mu4e
+     #+begin_src emacs-lisp
+       (use-package mu4e
+	 :config
+
+	 (require 'org-mu4e)
+	 (setq mail-user-agent 'mu4e-user-agent)
+
+	 ;; Refresh mail using offlineimap every 10 minutes
+	 (setq mu4e-update-interval (* 10 60))
+	 (setq mu4e-get-mail-command "offlineimap")
+	 (setq mu4e-maildir "~/Mail")
+
+	 ;; Set up contexts for email accounts
+	 (setq mu4e-contexts
+	       `(,(make-mu4e-context
+		   :name "Boldman.co"
+     #+end_src
+*** Calendar
+    [[https://github.com/kiwanami/emacs-calfw][calfw]] is a calendar UI that is able to show all of the scheduled Org Agenda items.
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package calfw
+	:disabled
+	:commands cfw:open-org-calendar
+	:config
+	 (setq cfw:fchar-junction ?╋
+	      cfw:fchar-vertical-line ?┃
+	      cfw:fchar-horizontal-line ?━
+	      cfw:fchar-left-junction ?┣
+	      cfw:fchar-right-junction ?┫
+	      cfw:fchar-top-junction ?┯
+	      cfw:fchar-top-left-corner ?┏
+	      cfw:fchar-top-right-corner ?┓)
+
+	 (use-package calfw-org
+	   :config
+	   (setq cfw:org-agenda-schedule-arg '(:timestamp))))
+
+      (jak/leader-key-def
+       "cc"  '(cfw:open-org-calendar :which-key "calendar"))
+    #+end_src
+*** Finance
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package ledger-mode
+	:mode "\\.lgr\\'"
+	:bind (:map ledger-mode-map
+		    ("TAB" . completion-at-point))
+	:custom
+	  (ledger-reports '(("bal" "%(binary) -f %(ledger-file) bal")
+			  ("bal this quarter" "%(binary) -f %(ledger-file) --period \"this quarter\" bal")
+			  ("bal last quarter" "%(binary) -f %(ledger-file) --period \"last quarter\" bal")
+			  ("reg" "%(binary) -f %(ledger-file) reg")
+			  ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+			  ("account" "%(binary) -f %(ledger-file) reg %(account)"))))
+    #+end_src
+*** EMMS
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package emms
+	:commands emms
+	:config
+	(require 'emms-setup)
+	(emms-standard)
+	(emms-default-players)
+	(emms-mode-line-disable)
+	(setq emms-source-file-default-directory "~/Music")
+	(jak/leader-key-def
+	 "am"  '(:ignore t :which-key "media")
+	 "amp" '(emms-pause :which-key "play / pause")
+	 "amf" '(emms-play-file :which-key "play file")))
+    #+end_src
+** System Utilites
+*** Guix 
+   #+begin_src emacs-lisp
+     (use-package guix
+       :defer t)
+
+     (jak/leader-key-def
+      "G"  '(:ignore t :which-key "Guix")
+      "Gg" '(guix :which-key "Guix")
+      "Gi" '(guix-installed-user-packages :which-key "user package")
+      "GI" '(guix-installed-system-packages :which-key "system packages")
+      "Gp" '(guix-packages-by-name :which-key "search packages")
+      "GP" '(guix-pull :which-key "pull"))
+   #+end_src
+*** Deamons
+    #+begin_src emacs-lisp
+      (use-package daemons
+	:commands daemons)
+    #+end_src
+*** PulseAudio
+    #+begin_src emacs-lisp :tangle init.el
+      (use-package pulseaudio-control
+	:commands pulseaudio-control-select-sink-by-name
+      )
+    #+end_src
 * Inspiration
   [[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] contains a host of packages and themes to check out for your own customizations
   

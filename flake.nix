@@ -5,12 +5,7 @@
   description = "Malestrom configuration";
 
   inputs = {
-    nixpkgs = {
-      type  = "github";
-      owner = "NixOS";
-      repo  = "nixpkgs";
-      ref   = "nixpkgs-unstable";
-    };
+    
     nixpkgs-stable = {
       type = "github";
       owner = "NixOS";
@@ -43,7 +38,7 @@
       tx220 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./configuration.nix
+          ./tx220.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
